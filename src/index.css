@@ -12,11 +12,8 @@ body {
 
 .container {
   max-width: 500px;
+  height: 100vh;
   margin: 10% auto;
-  overflow: auto;
-  min-height: 300px;
-  padding: 30px;
-  border-radius: 5px;
 }
 
 .header {
@@ -40,9 +37,17 @@ body {
   font-family: inherit;
 }
 
+.btn:hover {
+  transform: scale(1.05);
+  transition: all 0.3s ease;
+}
+
+.square:hover {
+  transform: scale(1.05);
+  transition: all 0.3s ease;
+}
+
 .Board {
-  width: 100%;
-  margin: 10px;
 }
 
 .status {
@@ -145,25 +150,38 @@ footer {
   text-align: center;
 }
 
-.historyBox {
-  border-right: 4px;
-  border-color: gray;
-  margin: 40 px;
-  padding: 15 px;
+.historyContainer {
+  padding: 15px;
+  max-width: 400px;
+  margin: 0 auto;
+
+  border: 1px solid black;
+
+  display: flex;
+  flex-direction: column;
 }
 
 .historyButton {
   display: inline-block;
-  background: #f4f4f4;
-  color: black;
   border: none;
-  padding: 10px 20px;
-  margin: 5px;
+  background: #a8a8a8;
+
   border-radius: 5px;
-  cursor: pointer;
+  width: 100%;
+
+  padding: 5px;
   text-decoration: none;
+  margin: 3px;
   font-size: 15px;
+  text-align: center;
   font-family: inherit;
+}
+
+.gameContainer {
+  overflow: auto;
+  min-height: 300px;
+  padding: 30px;
+  border-radius: 5px;
 }
 
 ol {
@@ -173,7 +191,7 @@ ol {
 }
 
 @media screen and (min-width: 600px) {
-  .container {
+  .gameContainer {
     border: 2px solid steelblue;
   }
 }

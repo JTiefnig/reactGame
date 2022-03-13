@@ -99,20 +99,22 @@ class App extends React.Component {
     });
 
     return (
-      <div className="container">
-        <Header onClick={() => this.clearBoard()} text="TickTackToe" />
-        <div>{status}</div>
-        <Board
-          squares={current.squares}
-          onClick={(i) => this.handleClick(i)}
-        ></Board>
-
-        <div className="game-info">
-          <div className="historyBox">
-            <ol>{moves}</ol>
+      <>
+        <div className="container">
+          <div className="gameContainer">
+            <Header onClick={() => this.clearBoard()} text="TickTackToe" />
+            <div>{status}</div>
+            <Board
+              squares={current.squares}
+              onClick={(i) => this.handleClick(i)}
+            ></Board>
           </div>
         </div>
-      </div>
+
+        <div className="historyContainer">
+          <ol>{moves}</ol>
+        </div>
+      </>
     );
   }
 }
