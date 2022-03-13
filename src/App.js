@@ -102,7 +102,7 @@ class App extends React.Component {
       <>
         <div className="container">
           <div className="gameContainer">
-            <Header onClick={() => this.clearBoard()} text="TickTackToe" />
+            <Header onClick={() => this.clearBoard()} text="Tic Tac Toe" />
             <div>{status}</div>
             <Board
               squares={current.squares}
