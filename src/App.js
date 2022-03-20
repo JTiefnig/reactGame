@@ -1,6 +1,7 @@
 import React from "react";
 import Header from "./components/Header";
 import Board from "./components/Board";
+import HistoryButton from "./components/HistoryButton"
 
 class App extends React.Component {
   constructor(props) {
@@ -76,6 +77,12 @@ class App extends React.Component {
     this.savestate();
   }
 
+
+  testClick()
+  {
+    console.log("testclick");
+  }
+
   render() {
     const history = this.state.history;
     const current = history[history.length - 1];
@@ -98,6 +105,12 @@ class App extends React.Component {
       );
     });
 
+
+
+
+    let btn = new HistoryButton();
+
+
     return (
       <>
         <div className="container">
@@ -109,7 +122,12 @@ class App extends React.Component {
               onClick={(i) => this.handleClick(i)}
             ></Board>
           </div>
+
+
+          {btn.render()}
         </div>
+
+        
 
         <div className="historyContainer">
           <ol>{moves}</ol>
