@@ -1,3 +1,6 @@
+import React from "react";
+
+
 const Header = ({ text, onClick }) => {
   const btnclick = (e) => onClick(e);
 

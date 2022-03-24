@@ -1,6 +1,7 @@
 import React from "react";
 import Header from "./components/Header";
 import Board from "./components/Board";
+import HistoryButton from "./components/HistoryButton";
 
 class App extends React.Component {
   constructor(props) {
@@ -109,6 +110,8 @@ class App extends React.Component {
               onClick={(i) => this.handleClick(i)}
             ></Board>
           </div>
+
+          <HistoryButton></HistoryButton>
         </div>
 
         <div className="historyContainer">
