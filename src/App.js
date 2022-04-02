@@ -1,11 +1,7 @@
 import React from "react";
 import Header from "./components/Header";
 import Board from "./components/Board";
-<<<<<<< HEAD
 import HistoryButton from "./components/HistoryButton";
-=======
-import HistoryButton from "./components/HistoryButton"
->>>>>>> 3bed0adc2dfd362217e0bffedffac64d41c8620d
 
 class App extends React.Component {
   constructor(props) {
@@ -73,18 +69,14 @@ class App extends React.Component {
   jumpTo(move) {
     const newhist = this.state.history.slice(0, move + 1);
 
+    console.log(move);
+
     this.setState({
       history: newhist,
       xIsNext: move % 2 === 0,
     });
 
     this.savestate();
-  }
-
-
-  testClick()
-  {
-    console.log("testclick");
   }
 
   render() {
@@ -99,21 +91,18 @@ class App extends React.Component {
     }
 
     const moves = history.map((step, move) => {
-      const desc = move ? "Go to move #" + move : "Go to game start";
+      if (move == 0) return <></>;
+
       return (
         <li key={move}>
-          <button className="historyButton" onClick={() => this.jumpTo(move)}>
-            {desc}
-          </button>
+          <HistoryButton
+            onClick={() => this.jumpTo(move)}
+            step={step}
+            move={move}
+          />
         </li>
       );
     });
-
-
-
-
-    let btn = new HistoryButton();
-
 
     return (
       <>
@@ -121,21 +110,14 @@ class App extends React.Component {
           <div className="gameContainer">
             <Header onClick={() => this.clearBoard()} text="Tic Tac Toe" />
             <div>{status}</div>
-            <Board
-              squares={current.squares}
-              onClick={(i) => this.handleClick(i)}
-            ></Board>
+            <div className="BoardContainer">
+              <Board
+                squares={current.squares}
+                onClick={(i) => this.handleClick(i)}
+              ></Board>
+            </div>
           </div>
-
-<<<<<<< HEAD
-          <HistoryButton></HistoryButton>
-=======
-
-          {btn.render()}
->>>>>>> 3bed0adc2dfd362217e0bffedffac64d41c8620d
         </div>
-
-        
 
         <div className="historyContainer">
           <ol>{moves}</ol>
@@ -165,7 +147,7 @@ function calculateWinner(squares) {
     }
   }
 
-  for (let i = 0; i < 8; i++) {
+  for (let i = 0; i < 9; i++) {
     if (squares[i] == null) return null;
   }
 

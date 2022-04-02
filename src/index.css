@@ -11,9 +11,46 @@ body {
 }
 
 .container {
+  display: flex;
+  flex-direction: column;
   max-width: 400px;
   height: 100vh;
-  margin: 10% auto;
+  margin: 0% auto;
+}
+
+.gameContainer {
+  padding: 30px;
+  border-radius: 5px;
+  margin: 20% 3%;
+}
+
+.BoardContainer {
+  padding: 5%;
+}
+
+.Board {
+  display: grid;
+  grid-gap: 8px;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+}
+
+.square {
+  background: #000;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  width: 100%;
+  padding-top: 100%; /* 1:1 Aspect Ratio */
+  position: relative;
+}
+
+.square > svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
 }
 
 .header {
@@ -37,6 +74,7 @@ body {
   font-family: inherit;
 }
 
+/*
 .btn:hover {
   transform: scale(1.05);
   transition: all 0.3s ease;
@@ -46,41 +84,19 @@ body {
   transform: scale(1.05);
   transition: all 0.3s ease;
 }
-
-.Board {
-}
+*/
 
 .status {
   margin-bottom: 10px;
 }
 
-.board-row {
-  display: flex;
-  justify-content: center;
-}
-
-
 @keyframes fadein {
-  from { opacity: 0; }
-  to   { opacity: 1; }
-}
-
-.square {
-  background: #000;
-  color: #fff;
-  border: none;
-  font-size: 40px;
-  font-weight: bold;
-
-  width: 100px;
-  height: 100px;
-
-  vertical-align: top;
-  margin-right: 2%;
-  margin-top: 2%;
-  padding: 0;
-  text-align: center;
-  border-radius: 4px;
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .kbd-navigation .square:focus {
@@ -161,36 +177,35 @@ footer {
   max-width: 400px;
   margin: 0 auto;
 
-  border: 1px solid black;
-
   display: flex;
   flex-direction: column;
 }
 
 .historyButton {
-  display: inline-block;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
   border: none;
-  background: #a8a8a8;
+  border-left: solid 4px black;
 
-  border-radius: 5px;
+  background: #f0f0f0;
   width: 100%;
 
   padding: 5px;
   text-decoration: none;
-  margin: 3px;
-  font-size: 15px;
-  text-align: center;
-  font-family: inherit;
-
+  margin: 6px;
 
   animation: fadein 0.5s;
 }
 
-.gameContainer {
-  overflow: auto;
-  min-height: 300px;
-  padding: 30px;
-  border-radius: 5px;
+.historyButton:hover {
+  border-left: solid 10px black;
+  background: #c2c2c2;
+}
+
+.lilBoard {
+  height: 60px;
+  width: 60px;
 }
 
 ol {
@@ -205,10 +220,15 @@ ol {
   }
 }
 
-@media screen and (max-width: 400px) {
-  .square {
-    width: 50px;
-    height: 50px;
-    font-size: 20px;
+.draw {
+  stroke-dasharray: 2338.5;
+  animation: dash2 4s linear;
+}
+@keyframes dash2 {
+  from {
+    stroke-dashoffset: 2338.5;
+  }
+  to {
+    stroke-dashoffset: 0;
   }
 }
