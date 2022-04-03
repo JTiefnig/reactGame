@@ -120,22 +120,20 @@ class App extends React.Component {
     });
 
     const warningRender = () => {
-      console.log(
-        this.state.browserDataConfirmation + "-" + this.state.warningShown
-      );
-      if (!this.state.browserDataConfirmation && !this.state.warningShown)
+      if (!this.state.browserDataConfirmation && !this.state.warningShown) {
         return (
           <BrowserDataWarning
             onAccept={(val) => this.confirmBrowserData(val)}
           />
         );
+      }
 
       return <></>;
     };
 
     return (
       <>
-        {warningRender}
+        {warningRender()}
         <div className="container">
           <div className="gameContainer">
             <Header onClick={() => this.clearBoard()} text="Tic Tac Toe" />

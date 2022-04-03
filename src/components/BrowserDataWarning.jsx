@@ -20,7 +20,7 @@ const BrowserDataWarning = ({ onAccept }) => {
           ACCEPT
         </button>
         <button className="btn" onClick={() => onAccept(false)}>
-          reject
+          REJECT
         </button>
       </div>
     </div>

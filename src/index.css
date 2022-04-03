@@ -224,10 +224,11 @@ ol {
   display: flex;
   flex-direction: row;
   justify-content: center;
+  align-items: center;
 
   position: fixed;
 
-  width: 100vh;
+  width: 100vw;
   height: 100vh;
   z-index: 99;
 
@@ -238,12 +239,16 @@ ol {
   display: flex;
   flex-direction: column;
   justify-content: space-around;
-  height: 500px;
+
   width: 400px;
-  padding: 30px;
+  padding: 20px;
   background-color: white;
   border-radius: 5%;
-  margin: 20% auto;
+  min-width: 300px;
+}
+
+.WarningBox > * {
+  margin: 10px;
 }
 
 .draw {
