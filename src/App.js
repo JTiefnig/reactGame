@@ -57,6 +57,15 @@ class App extends React.Component {
     this.savestate();
   }
 
+  handleKeyInput(event) {
+    try {
+      var inp = parseInt(event.key) - 1;
+      if (inp >= 0 && inp < 9) {
+        this.handleClick(inp);
+      }
+    } catch {}
+  }
+
   clearBoard() {
     let clearhistory = [
       {
@@ -135,7 +144,11 @@ class App extends React.Component {
       <>
         {warningRender()}
         <div className="container">
-          <div className="gameContainer">
+          <div
+            className="gameContainer"
+            onKeyPress={(event) => this.handleKeyInput(event)}
+            tabIndex="0"
+          >
             <Header onClick={() => this.clearBoard()} text="Tic Tac Toe" />
             <div>{status}</div>
             <div className="BoardContainer">
