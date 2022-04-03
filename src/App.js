@@ -123,7 +123,6 @@ class App extends React.Component {
       console.log(
         this.state.browserDataConfirmation + "-" + this.state.warningShown
       );
-
       if (!this.state.browserDataConfirmation && !this.state.warningShown)
         return (
           <BrowserDataWarning
@@ -136,7 +135,7 @@ class App extends React.Component {
 
     return (
       <>
-        {warningRender()}
+        {warningRender}
         <div className="container">
           <div className="gameContainer">
             <Header onClick={() => this.clearBoard()} text="Tic Tac Toe" />
