@@ -220,6 +220,32 @@ ol {
   }
 }
 
+.FullScreenContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+
+  position: fixed;
+
+  width: 100vh;
+  height: 100vh;
+  z-index: 99;
+
+  background: #aaaaaa98;
+}
+
+.WarningBox {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  height: 500px;
+  width: 400px;
+  padding: 30px;
+  background-color: white;
+  border-radius: 5%;
+  margin: 20% auto;
+}
+
 .draw {
   stroke-dasharray: 2338.5;
   animation: dash2 4s linear;

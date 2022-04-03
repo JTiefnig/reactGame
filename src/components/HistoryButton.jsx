@@ -14,10 +14,10 @@ class HistoryButton extends React.Component {
     let lilBoard = [];
     lilBoard.push(
       <>
-        <line key="l1" className="draw" x1="33%" y1="0%" x2="33%" y2="100%" />
-        <line key="l2" className="draw" x1="66%" y1="0%" x2="66%" y2="100%" />
-        <line key="l3" className="draw" x1="0%" y1="33%" x2="100%" y2="33%" />
-        <line key="l4" className="draw" x1="0%" y1="66%" x2="100%" y2="66%" />
+        <line className="draw" x1="33%" y1="0%" x2="33%" y2="100%" />
+        <line className="draw" x1="66%" y1="0%" x2="66%" y2="100%" />
+        <line className="draw" x1="0%" y1="33%" x2="100%" y2="33%" />
+        <line className="draw" x1="0%" y1="66%" x2="100%" y2="66%" />
       </>
     );
 
@@ -32,7 +32,6 @@ class HistoryButton extends React.Component {
           lilBoard.push(
             <>
               <line
-                key={id + "a"}
                 className="draw"
                 x1={ix * 33 + ofs + "%"}
                 y1={iy * 33 + ofs + "%"}
@@ -40,7 +39,6 @@ class HistoryButton extends React.Component {
                 y2={iy * 33 + ofs + sS + "%"}
               />
               <line
-                key={id + "b"}
                 className="draw"
                 x1={ix * 33 + ofs + sS + "%"}
                 y1={iy * 33 + ofs + "%"}
@@ -56,7 +54,6 @@ class HistoryButton extends React.Component {
           const py = iy * 33 + 17;
           lilBoard.push(
             <circle
-              key={id}
               className="draw"
               cx={px + "%"}
               cy={py + "%"}
@@ -67,9 +64,7 @@ class HistoryButton extends React.Component {
         }
       }
 
-    let svgContent = lilBoard.map((el, id) => {
-      return <g key={id}>{el}</g>;
-    });
+    let svgContent = lilBoard.map((el, id) => <g key={id}>{el}</g>);
 
     return (
       <button className="historyButton" onClick={() => this.props.onClick()}>

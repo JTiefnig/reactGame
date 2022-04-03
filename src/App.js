@@ -2,6 +2,8 @@ import React from "react";
 import Header from "./components/Header";
 import Board from "./components/Board";
 import HistoryButton from "./components/HistoryButton";
+import BrowserDataWarning from "./components/BrowserDataWarning";
+import { toBeRequired } from "@testing-library/jest-dom/dist/matchers";
 
 class App extends React.Component {
   constructor(props) {
@@ -17,18 +19,22 @@ class App extends React.Component {
           },
         ],
         xIsNext: true,
+        browserDataConfirmation: false,
+        warningShown: false,
       };
     }
   }
 
   savestate() {
-    localStorage.setItem(
-      "gamestate",
-      JSON.stringify({
-        history: this.state.history,
-        xIsNext: this.state.xIsNext,
-      })
-    );
+    if (this.state.browserDataConfirmation)
+      localStorage.setItem(
+        "gamestate",
+        JSON.stringify({
+          history: this.state.history,
+          xIsNext: this.state.xIsNext,
+          browserDataConfirmation: this.state.browserDataConfirmation,
+        })
+      );
   }
 
   handleClick(i) {
@@ -61,6 +67,15 @@ class App extends React.Component {
     this.setState({
       history: clearhistory,
       xIsNext: true,
+    });
+
+    this.savestate();
+  }
+
+  confirmBrowserData(confirm) {
+    this.setState({
+      browserDataConfirmation: confirm,
+      warningShown: true,
     });
 
     this.savestate();
@@ -104,8 +119,24 @@ class App extends React.Component {
       );
     });
 
+    const warningRender = () => {
+      console.log(
+        this.state.browserDataConfirmation + "-" + this.state.warningShown
+      );
+
+      if (!this.state.browserDataConfirmation && !this.state.warningShown)
+        return (
+          <BrowserDataWarning
+            onAccept={(val) => this.confirmBrowserData(val)}
+          />
+        );
+
+      return <></>;
+    };
+
     return (
       <>
+        {warningRender()}
         <div className="container">
           <div className="gameContainer">
             <Header onClick={() => this.clearBoard()} text="Tic Tac Toe" />
