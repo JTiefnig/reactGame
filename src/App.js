@@ -4,6 +4,7 @@ import Board from "./components/Board";
 import HistoryButton from "./components/HistoryButton";
 import BrowserDataWarning from "./components/BrowserDataWarning";
 import { toBeRequired } from "@testing-library/jest-dom/dist/matchers";
+import WinCard from "./components/WinCard";
 
 class App extends React.Component {
   constructor(props) {
@@ -108,8 +109,12 @@ class App extends React.Component {
     const current = history[history.length - 1];
     const winner = calculateWinner(current.squares);
     let status;
+    let winnerCard = <></>;
     if (winner) {
       status = winner;
+      winnerCard = (
+        <WinCard winner={winner} onOk={() => this.clearBoard()}></WinCard>
+      );
     } else {
       status = "Next player: " + (this.state.xIsNext ? "X" : "O");
     }
@@ -143,13 +148,14 @@ class App extends React.Component {
     return (
       <>
         {warningRender()}
+        {winnerCard}
         <div className="container">
           <div
             className="gameContainer"
             onKeyPress={(event) => this.handleKeyInput(event)}
             tabIndex="0"
           >
-            <Header onClick={() => this.clearBoard()} text="Tic Tac Toe" />
+            <Header />
             <div>{status}</div>
             <div className="BoardContainer">
               <Board
@@ -184,7 +190,7 @@ function calculateWinner(squares) {
   for (let i = 0; i < lines.length; i++) {
     const [a, b, c] = lines[i];
     if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-      return "Winner: " + squares[a];
+      return squares[a];
     }
   }
 
