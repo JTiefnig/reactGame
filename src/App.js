@@ -13,16 +13,7 @@ class App extends React.Component {
     if (localStorage.getItem("gamestate")) {
       this.state = JSON.parse(localStorage.getItem("gamestate"));
     } else {
-      this.state = {
-        history: [
-          {
-            squares: Array(9).fill(null),
-          },
-        ],
-        xIsNext: true,
-        browserDataConfirmation: false,
-        warningShown: false,
-      };
+      this.clearBoard();
     }
   }
 
@@ -39,6 +30,12 @@ class App extends React.Component {
   }
 
   handleClick(i) {
+    if (!this.state.xIsNext) {
+      this.handleinput(i);
+    }
+  }
+
+  handleinput(i) {
     const history = this.state.history;
     const current = history[history.length - 1];
     const squares = current.squares.slice();
@@ -69,6 +66,8 @@ class App extends React.Component {
   }
 
   clearBoard() {
+    let first = Math.round(Math.random());
+
     let clearhistory = [
       {
         squares: Array(9).fill(null),
@@ -77,7 +76,7 @@ class App extends React.Component {
 
     this.setState({
       history: clearhistory,
-      xIsNext: true,
+      xIsNext: first,
     });
 
     this.savestate();
@@ -118,13 +117,13 @@ class App extends React.Component {
       );
     } else {
       status = "Next player: " + (this.state.xIsNext ? "X" : "O");
-
-      if (this.state.xIsNext) {
-        let move = calcNextMove(current.squares);
-        if (move != -1) {
-          this.handleClick(move);
-        }
-      }
+      setTimeout(() => {
+        if (this.state.xIsNext)
+          calcNextMove(current.squares).then((move) => {
+            this.handleinput(move);
+            console.log(`move ${move}`);
+          });
+      }, 500);
     }
 
     const moves = history.map((step, move) => {
@@ -163,12 +162,14 @@ class App extends React.Component {
             onKeyPress={(event) => this.handleKeyInput(event)}
             tabIndex="0"
           >
-            <Header />
+            <Header onClick={() => this.clearBoard()} />
             <div>{status}</div>
             <div className="BoardContainer">
               <Board
                 squares={current.squares}
-                onClick={(i) => this.handleClick(i)}
+                onClick={(i) => {
+                  this.handleClick(i);
+                }}
               ></Board>
             </div>
           </div>
@@ -216,19 +217,13 @@ function minimax(gameState, position, recursion = 0, xIsNext) {
 
   let winner = calculateWinner(squares);
   if (winner === "Draw") return 0;
-  if (winner === "X") return 9 - recursion;
-  if (winner === "O") return -(9 - recursion);
+  if (winner === "X") return 9 * 9 - recursion * recursion;
+  if (winner === "O") return -(9 * 9 - recursion * recursion);
 
-  let points = -Infinity;
-  if (!xIsNext) points = Infinity;
+  let points = 0;
   for (let i = 0; i < 9; i++) {
     if (!squares[i]) {
-      let res = minimax(squares, i, recursion + 1, !xIsNext);
-      if (xIsNext) {
-        if (points < res) points = res;
-      } else {
-        if (points > res) points = res;
-      }
+      points += minimax(squares, i, recursion + 1, !xIsNext);
     }
   }
 
@@ -236,22 +231,25 @@ function minimax(gameState, position, recursion = 0, xIsNext) {
 }
 
 // X = Computer
-function calcNextMove(gameState) {
-  let move = -1;
+async function calcNextMove(gameState) {
   let points = -Infinity;
-  console.log(`test ${gameState}`);
+  let possibleMoves = [];
+
   for (let i = 0; i < 9; i++) {
     if (!gameState[i]) {
       let np = minimax(gameState, i, 0, true);
-
-      console.log(`move ${i} np ${np}`);
-
+      if (np == points) {
+        possibleMoves.push(i);
+      }
       if (np > points) {
-        move = i;
+        possibleMoves = [];
+        possibleMoves.push(i);
         points = np;
       }
     }
   }
 
-  return move;
+  if (possibleMoves.length)
+    return possibleMoves[Math.floor(Math.random() * possibleMoves.length)];
+  return -1;
 }
