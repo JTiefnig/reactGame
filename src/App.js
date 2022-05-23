@@ -46,6 +46,7 @@ class App extends React.Component {
       return;
     }
     squares[i] = this.state.xIsNext ? "X" : "O";
+
     this.setState({
       history: history.concat([
         {
@@ -117,6 +118,13 @@ class App extends React.Component {
       );
     } else {
       status = "Next player: " + (this.state.xIsNext ? "X" : "O");
+
+      if (this.state.xIsNext) {
+        let move = calcNextMove(current.squares);
+        if (move != -1) {
+          this.handleClick(move);
+        }
+      }
     }
 
     const moves = history.map((step, move) => {
@@ -199,4 +207,51 @@ function calculateWinner(squares) {
   }
 
   return "Draw";
+}
+
+function minimax(gameState, position, recursion = 0, xIsNext) {
+  // do move
+  let squares = Array.from(gameState);
+  squares[position] = xIsNext ? "X" : "O";
+
+  let winner = calculateWinner(squares);
+  if (winner === "Draw") return 0;
+  if (winner === "X") return 9 - recursion;
+  if (winner === "O") return -(9 - recursion);
+
+  let points = -Infinity;
+  if (!xIsNext) points = Infinity;
+  for (let i = 0; i < 9; i++) {
+    if (!squares[i]) {
+      let res = minimax(squares, i, recursion + 1, !xIsNext);
+      if (xIsNext) {
+        if (points < res) points = res;
+      } else {
+        if (points > res) points = res;
+      }
+    }
+  }
+
+  return points;
+}
+
+// X = Computer
+function calcNextMove(gameState) {
+  let move = -1;
+  let points = -Infinity;
+  console.log(`test ${gameState}`);
+  for (let i = 0; i < 9; i++) {
+    if (!gameState[i]) {
+      let np = minimax(gameState, i, 0, true);
+
+      console.log(`move ${i} np ${np}`);
+
+      if (np > points) {
+        move = i;
+        points = np;
+      }
+    }
+  }
+
+  return move;
 }
