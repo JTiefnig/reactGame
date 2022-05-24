@@ -13,7 +13,15 @@ class App extends React.Component {
     if (localStorage.getItem("gamestate")) {
       this.state = JSON.parse(localStorage.getItem("gamestate"));
     } else {
-      this.clearBoard();
+      this.state = {
+        history: [
+          {
+            squares: Array(9).fill(null),
+          },
+        ],
+        xIsNext: false,
+        browserDataConfirmation: false,
+      };
     }
   }
 
@@ -94,8 +102,6 @@ class App extends React.Component {
   jumpTo(move) {
     const newhist = this.state.history.slice(0, move + 1);
 
-    console.log(move);
-
     this.setState({
       history: newhist,
       xIsNext: move % 2 === 0,
@@ -121,7 +127,6 @@ class App extends React.Component {
         if (this.state.xIsNext)
           calcNextMove(current.squares).then((move) => {
             this.handleinput(move);
-            console.log(`move ${move}`);
           });
       }, 500);
     }
