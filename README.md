@@ -1,12 +1,8 @@
 # React Game
 
 Basic Tic Tac Toe implementation with history
-
-## Idea from:
-
-https://reactjs.org/tutorial/tutorial.html
+With basic minimax algorithm for computer player
 
 ## Todos
 
-- Improve win animation
-- Implement non-player character
+- Refactor Code
