@@ -3,12 +3,15 @@ import Header from "./components/Header";
 import Board from "./components/Board";
 import HistoryButton from "./components/HistoryButton";
 import BrowserDataWarning from "./components/BrowserDataWarning";
-import { toBeRequired } from "@testing-library/jest-dom/dist/matchers";
 import WinCard from "./components/WinCard";
+
+import tictactoe from "./components/game";
 
 class App extends React.Component {
   constructor(props) {
     super(props);
+
+    this.game = new tictactoe();
 
     if (localStorage.getItem("gamestate")) {
       this.state = JSON.parse(localStorage.getItem("gamestate"));
@@ -26,7 +29,7 @@ class App extends React.Component {
   }
 
   savestate() {
-    if (this.state.browserDataConfirmation)
+    if (this.state.browserDataConfirmation) {
       localStorage.setItem(
         "gamestate",
         JSON.stringify({
@@ -35,10 +38,12 @@ class App extends React.Component {
           browserDataConfirmation: this.state.browserDataConfirmation,
         })
       );
+    }
   }
 
   handleClick(i) {
     if (!this.state.xIsNext) {
+      console.log("handle input: " + i);
       this.handleinput(i);
     }
   }
@@ -128,22 +133,22 @@ class App extends React.Component {
           calcNextMove(current.squares).then((move) => {
             this.handleinput(move);
           });
-      }, 500);
+      }, 100);
     }
 
-    const moves = history.map((step, move) => {
-      if (move == 0) return <></>;
-
-      return (
-        <li key={move}>
-          <HistoryButton
-            onClick={() => this.jumpTo(move)}
-            step={step}
-            move={move}
-          />
-        </li>
-      );
-    });
+    let moves = <></>;
+    if (history.length > 0)
+      moves = history.map((step, move) => {
+        return (
+          <li key={move}>
+            <HistoryButton
+              onClick={() => this.jumpTo(move)}
+              step={step}
+              move={move}
+            />
+          </li>
+        );
+      });
 
     const warningRender = () => {
       if (!this.state.browserDataConfirmation && !this.state.warningShown) {
@@ -181,6 +186,7 @@ class App extends React.Component {
         </div>
 
         <div className="historyContainer">
+          {history.length > 0 && <h3>History</h3>}
           <ol>{moves}</ol>
         </div>
       </>
@@ -215,20 +221,31 @@ function calculateWinner(squares) {
   return "Draw";
 }
 
-function minimax(gameState, position, recursion = 0, xIsNext) {
+function minimax(gameState, position, recursion = 10, xIsNext) {
   // do move
   let squares = Array.from(gameState);
   squares[position] = xIsNext ? "X" : "O";
 
   let winner = calculateWinner(squares);
   if (winner === "Draw") return 0;
-  if (winner === "X") return 9 * 9 - recursion * recursion;
-  if (winner === "O") return -(9 * 9 - recursion * recursion);
+  if (winner === "X") return recursion;
+  if (winner === "O") return -recursion;
 
-  let points = 0;
+  // move is done, no game result yet
+  // now optimizing for the other player (!xIsNext)
+  let points = xIsNext ? Infinity : -Infinity;
+  let sel = null;
   for (let i = 0; i < 9; i++) {
     if (!squares[i]) {
-      points += minimax(squares, i, recursion + 1, !xIsNext);
+      let npoints = minimax(squares, i, recursion - 1, !xIsNext);
+      if (xIsNext && points > npoints) {
+        points = npoints;
+        sel = i;
+      }
+      if (!xIsNext && points < npoints) {
+        points = npoints;
+        sel = i;
+      }
     }
   }
 
@@ -242,8 +259,9 @@ async function calcNextMove(gameState) {
 
   for (let i = 0; i < 9; i++) {
     if (!gameState[i]) {
-      let np = minimax(gameState, i, 0, true);
-      if (np == points) {
+      let np = minimax(gameState, i, 9, true);
+      console.log("move" + i + " points: " + np);
+      if (np === points) {
         possibleMoves.push(i);
       }
       if (np > points) {
@@ -253,6 +271,8 @@ async function calcNextMove(gameState) {
       }
     }
   }
+
+  console.log("possible moves " + possibleMoves.length + " max: " + points);
 
   if (possibleMoves.length)
     return possibleMoves[Math.floor(Math.random() * possibleMoves.length)];

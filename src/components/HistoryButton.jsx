@@ -71,7 +71,7 @@ class HistoryButton extends React.Component {
         <svg className="lilBoard" stroke="black" strokeWidth="2%">
           {svgContent}
         </svg>
-        <a>Jump to move {this.props.move}</a>
+        <p>Jump to move {this.props.move}</p>
       </button>
     );
   }

@@ -5,17 +5,17 @@ const BrowserDataWarning = ({ onAccept }) => {
     <div className="FullScreenContainer">
       <div className="WarningBox">
         <h3>Your tracker settings</h3>
-        <a>
+        <p>
           We use cookies and similar methods to recognize visitors and remember
           their preferences. We also use them to measure ad campaign
           effectiveness, target ads and analyze site traffic.
-        </a>
+        </p>
         <br></br>
-        <a>
+        <p>
           By clicking accept, you consent to the processing of your data by us
           and third parties using the above methods. You can always change your
           tracker preferences by visiting our Cookie Policy.
-        </a>
+        </p>
         <button className="btn" onClick={() => onAccept(true)}>
           ACCEPT
         </button>

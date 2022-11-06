@@ -44,7 +44,6 @@ const WinCard = ({ winner, onOk }) => {
         />
       </svg>
     );
-    console.log(win);
     if (win === "X") return xSign;
     if (win === "O") return oSign;
     if (win === "Draw")
